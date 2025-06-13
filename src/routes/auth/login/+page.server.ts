@@ -11,6 +11,12 @@ import {
 } from '$lib/server/api/session';
 import { verifyPassword } from '$lib/server/api/password';
 
+export function load({ locals }) {
+    if (locals.session !== null && locals.user !== null) {
+        return redirect(302, '/');
+    }
+}
+
 export const actions: Actions = {
     login: async ({ request, cookies }) => {
         const formData = Object.fromEntries(await request.formData());
