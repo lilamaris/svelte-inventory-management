@@ -77,3 +77,11 @@ export async function getUserFromEmail(email: string): Promise<User | null> {
 
     return user;
 }
+
+export async function checkEmailAvailability(email: string): Promise<boolean> {
+    const count = await prisma.user.count({
+        where: { email }
+    });
+
+    return count === 0;
+}
