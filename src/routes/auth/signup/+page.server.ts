@@ -1,8 +1,9 @@
+import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
-import { checkEmailAvailability, createUser } from '$lib/server/api/user';
+
 import { signupSchema } from '$features/auth/types/authSchema';
+import { checkEmailAvailability, createUser } from '$lib/server/api/user';
 import type { ActionState } from '$lib/types';
-import { fail } from '@sveltejs/kit';
 
 export const actions: Actions = {
     signup: async ({ request }) => {
@@ -31,13 +32,8 @@ export const actions: Actions = {
             return fail(400, { state });
         }
 
-        const user = await createUser(email, username, password);
+        await createUser(email, username, password);
 
-        return {
-            state: {
-                success: true,
-                message: 'Signup successful'
-            }
-        };
+        return redirect(302, '/auth/login');
     }
 };
