@@ -13,12 +13,14 @@ export async function createUser(email: string, username: string, password: stri
         data: {
             username,
             email,
-            passwordHash,
-            roles: {
-                create: {
-                    role: 'Viewer'
-                }
-            }
+            passwordHash
+        }
+    });
+
+    await prisma.userRole.create({
+        data: {
+            role: 'Viewer',
+            userId: user.id
         }
     });
 
