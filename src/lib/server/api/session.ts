@@ -1,7 +1,7 @@
 import prisma from '$lib/prisma';
 import { encodeBase32LowerCaseNoPadding, encodeHexLowerCase } from '@oslojs/encoding';
 import { sha256 } from '@oslojs/crypto/sha2';
-import type { RequestEvent } from '@sveltejs/kit';
+import type { Cookies } from '@sveltejs/kit';
 
 import type { User } from '$lib/server/api/user';
 
@@ -75,8 +75,8 @@ export async function invalidateUserSessions(userId: string): Promise<void> {
     });
 }
 
-export function setSessionTokenCookie(event: RequestEvent, token: string, expiresAt: Date): void {
-    event.cookies.set('session', token, {
+export function setSessionTokenCookie(cookies: Cookies, token: string, expiresAt: Date): void {
+    cookies.set('session', token, {
         httpOnly: true,
         path: '/',
         secure: process.env.NODE_ENV === 'production',
@@ -86,8 +86,8 @@ export function setSessionTokenCookie(event: RequestEvent, token: string, expire
     });
 }
 
-export function deleteSessionTokenCookie(event: RequestEvent): void {
-    event.cookies.set('session', '', {
+export function deleteSessionTokenCookie(cookies: Cookies): void {
+    cookies.set('session', '', {
         httpOnly: true,
         path: '/',
         secure: process.env.NODE_ENV === 'production',
