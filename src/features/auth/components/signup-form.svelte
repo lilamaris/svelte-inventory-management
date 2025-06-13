@@ -10,17 +10,14 @@
 </script>
 
 <script lang="ts">
-    import type { SubmitFunction } from '@sveltejs/kit';
     import { Label } from '$components/ui/label';
     import { Input } from '$components/ui/input';
     import { enhance } from '$app/forms';
 
     let { formId, action = '', state }: SignupFormProps = $props();
-
-    const handleSubmit: SubmitFunction = (event) => {};
 </script>
 
-<form id={formId} {action} use:enhance={handleSubmit} method="post" class="flex flex-col gap-6">
+<form id={formId} {action} use:enhance method="post" class="flex flex-col gap-6">
     <div class="grid gap-2">
         <Label for="username">Username</Label>
         <Input type="text" id="username" name="username" placeholder="Enter your username" />
