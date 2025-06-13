@@ -1,6 +1,6 @@
 import type { Actions } from './$types';
 import { checkEmailAvailability, createUser } from '$lib/server/api/user';
-import { signupSchema } from '$features/auth/types/signupSchema';
+import { signupSchema } from '$features/auth/types/authSchema';
 import type { ActionState } from '$lib/types';
 import { fail } from '@sveltejs/kit';
 

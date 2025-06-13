@@ -1,7 +1,6 @@
 <script lang="ts" module>
-    import type { SubmitFunction } from '@sveltejs/kit';
     import type { ActionState } from '$lib/types';
-    import { signupSchema } from '../types/signupSchema';
+    import { signupSchema } from '$features/auth/types/authSchema';
 
     export type SignupFormProps = {
         formId: string;
@@ -11,6 +10,7 @@
 </script>
 
 <script lang="ts">
+    import type { SubmitFunction } from '@sveltejs/kit';
     import { Label } from '$components/ui/label';
     import { Input } from '$components/ui/input';
     import { enhance } from '$app/forms';
