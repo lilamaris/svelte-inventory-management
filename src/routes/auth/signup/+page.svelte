@@ -1,8 +1,8 @@
 <script lang="ts">
     import * as Card from '$components/ui/card';
+    import { Button } from '$components/ui/button';
 
     import SignupForm from '$features/auth/components/signup-form.svelte';
-    import Button from '$components/ui/button/button.svelte';
 
     const formId = 'signup-form';
     const action = '?/signup';
