@@ -5,6 +5,7 @@ export interface User {
     id: string;
     username: string;
     email: string;
+    roles: string[];
 }
 
 export async function createUser(email: string, username: string, password: string): Promise<User> {
@@ -27,7 +28,8 @@ export async function createUser(email: string, username: string, password: stri
     return {
         id: user.id,
         username: user.username,
-        email: user.email
+        email: user.email,
+        roles: ['Viewer']
     };
 }
 
@@ -71,11 +73,25 @@ export async function getUserFromEmail(email: string): Promise<User | null> {
         select: {
             id: true,
             username: true,
-            email: true
+            email: true,
+            roles: {
+                select: {
+                    role: true
+                }
+            }
         }
     });
 
-    return user;
+    if (!user) {
+        return null;
+    }
+
+    return {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        roles: user.roles.map((role) => role.role)
+    };
 }
 
 export async function checkEmailAvailability(email: string): Promise<boolean> {

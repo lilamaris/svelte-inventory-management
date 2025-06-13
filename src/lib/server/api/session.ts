@@ -27,7 +27,12 @@ export async function validateSessionToken(token: string): Promise<SessionValida
                 select: {
                     id: true,
                     username: true,
-                    email: true
+                    email: true,
+                    roles: {
+                        select: {
+                            role: true
+                        }
+                    }
                 }
             }
         }
@@ -44,7 +49,8 @@ export async function validateSessionToken(token: string): Promise<SessionValida
     const user: User = {
         id: sessionResult.user.id,
         username: sessionResult.user.username,
-        email: sessionResult.user.email
+        email: sessionResult.user.email,
+        roles: sessionResult.user.roles.map((role) => role.role)
     };
 
     if (now >= session.expiresAt.getTime()) {
