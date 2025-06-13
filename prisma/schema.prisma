@@ -25,13 +25,14 @@ model User {
   username String
   email String @unique
   passwordHash String
+  createdAt DateTime @default(now())
 
   sessions Session[]
   roles UserRole[]
 }
 
 model UserRole {
-  id String @id
+  id String @id @default(uuid())
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -40,7 +41,7 @@ model UserRole {
 
 model Session {
   id String @id
-  expires_at Int
+  expiresAt DateTime
 
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
