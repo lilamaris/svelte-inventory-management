@@ -14,15 +14,34 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  Admin
+  Manager
+  Viewer
+}
+
 model User {
   id String @id @default(uuid())
+  username String
   email String @unique
-  password String
+  passwordHash String
+
+  sessions Session[]
+  roles UserRole[]
+}
+
+model UserRole {
+  id String @id
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  role Role
 }
 
 model Session {
   id String @id
-  secretHash Bytes
-  lastVerifiedAt Int
-  createdAt Int
+  expires_at Int
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
