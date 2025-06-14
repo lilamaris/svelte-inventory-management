@@ -24,15 +24,36 @@ enum Role {
   Viewer
 }
 
+enum AccountType {
+  Credentials
+  Github
+  Kakao
+}
+
+model Account {
+  id String @id @default(uuid())
+  providerId String?
+  type AccountType
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  passwordHash String?
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([providerId, type])
+}
+
 model User {
   id String @id @default(uuid())
   username String
   email String @unique
-  passwordHash String
+  avatarUrl String?
   createdAt DateTime @default(now())
 
   sessions Session[]
   roles UserRole[]
+  accounts Account[]
 }
 
 model UserRole {
