@@ -19,6 +19,9 @@
         <Card.Content>
             <div class="flex flex-col gap-4">
                 <SignupForm {formId} {action} state={form?.state} />
+                {#if form?.state?.message}
+                    <p class="text-destructive text-sm">{form.state.message}</p>
+                {/if}
                 <Button type="submit" form={formId}>Sign up</Button>
                 <div class="text-center text-sm">
                     Already have an account? <a href="/auth/login" class="hover:underline">Login</a>
