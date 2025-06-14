@@ -26,6 +26,7 @@
 		"@tailwindcss/vite": "^4.0.0",
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/svelte": "^5.2.4",
+		"@zerodevx/svelte-toast": "^0.9.6",
 		"bits-ui": "^2.6.2",
 		"clsx": "^2.1.1",
 		"eslint": "^9.18.0",
