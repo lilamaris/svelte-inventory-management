@@ -4,6 +4,7 @@
     import { page } from '$app/state';
     import '../app.css';
     let { children } = $props();
+    import { ModeWatcher } from 'mode-watcher';
 
     $effect(() => {
         if (page.data.toast) {
@@ -27,3 +28,4 @@
 
 {@render children()}
 <Toaster />
+<ModeWatcher />
