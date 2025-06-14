@@ -3,22 +3,22 @@ import {
     invalidateUserSessions,
     validateSessionToken
 } from '$lib/server/api/session';
-import type { Cookies } from '@sveltejs/kit';
+import { setToastMessage } from '$lib/server/api/toast';
 import { redirect } from '@sveltejs/kit';
 
-export async function GET({ cookies }: { cookies: Cookies }) {
+export const GET = async ({ cookies }) => {
     const token = cookies.get('session');
-    if (!token) {
-        return redirect(302, '/');
+    if (token) {
+        const { user } = await validateSessionToken(token);
+        if (user) {
+            await invalidateUserSessions(user.id);
+        }
+        deleteSessionTokenCookie(cookies);
     }
-
-    const { user } = await validateSessionToken(token);
-    if (!user) {
-        console.error('Invalid session token:', token);
-        return redirect(302, '/');
-    }
-
-    await invalidateUserSessions(user.id);
-    deleteSessionTokenCookie(cookies);
-    return redirect(302, '/');
-}
+    setToastMessage(cookies, {
+        message: 'You have been logged out!',
+        type: 'success',
+        path: '/'
+    });
+    throw redirect(302, '/');
+};

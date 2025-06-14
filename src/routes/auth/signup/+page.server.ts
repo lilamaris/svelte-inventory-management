@@ -6,6 +6,17 @@ import { createUser, getUserFromEmail } from '$lib/server/api/user';
 import type { ActionState } from '$lib/types';
 import { checkUserHasAccountType, createAccount } from '$lib/server/api/auth/account';
 import { AccountType } from '$generated/prisma';
+import { getToastMessage, setToastMessage } from '$lib/server/api/toast';
+import {
+    createSession,
+    generateSessionToken,
+    setSessionTokenCookie
+} from '$lib/server/api/session';
+
+export function load({ cookies }) {
+    const toast = getToastMessage(cookies);
+    return { toast };
+}
 
 export const actions: Actions = {
     signup: async ({ request, cookies }) => {
@@ -23,44 +34,31 @@ export const actions: Actions = {
 
         const { username, email, password } = validateData.data;
 
-        // if user is exists with email, we need to check user has credentials account
-        // we need to check user has credentials account
-        // if user has credentials account, need to block signup and redirect to login page
-        // if user doen't have credentials account, need to create new credentials account and link to exists user
-        // if user is not exists with email, create new user and create new credentials account and link to new user
-        const user = await getUserFromEmail(email);
+        const user = (await getUserFromEmail(email)) || (await createUser(email, username));
 
-        if (user) {
-            if (await checkUserHasAccountType(user.id, AccountType.Credentials)) {
-                return fail(400, { state: { message: 'User already has account' } });
-            }
-            await createAccount({
-                userId: user.id,
-                type: AccountType.Credentials,
-                password
-            });
-            const flashMessage = {
-                message:
-                    'Create credentials successfully. Now you can login with your credentials.',
-                type: 'success'
-            };
-            cookies.set('flash', JSON.stringify(flashMessage), {
-                path: '/',
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'lax',
-                maxAge: 60 * 60 * 24 * 30
+        if (await checkUserHasAccountType(user.id, AccountType.Credentials)) {
+            setToastMessage(cookies, {
+                message: 'User already has credentials account',
+                type: 'error',
+                path: '/auth/login'
             });
             return redirect(302, '/auth/login');
         }
 
-        const newUser = await createUser(email, username);
         await createAccount({
-            userId: newUser.id,
+            userId: user.id,
             type: AccountType.Credentials,
             password
         });
+        const sessionToken = generateSessionToken();
+        const session = await createSession(sessionToken, user.id);
+        setSessionTokenCookie(cookies, sessionToken, session.expiresAt);
+        setToastMessage(cookies, {
+            message: 'Your account has been created successfully!',
+            type: 'success',
+            path: '/app'
+        });
 
-        return redirect(302, '/auth/login');
+        return redirect(302, '/app');
     }
 };

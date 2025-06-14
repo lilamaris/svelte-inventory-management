@@ -11,6 +11,8 @@ import { github } from '$lib/server/api/auth/oauth';
 import { createUser, getUserFromEmail } from '$lib/server/api/user';
 import { AccountType } from '$generated/prisma';
 import { createAccount, getAccountWithProviderId } from '$lib/server/api/auth/account';
+import { setToastMessage } from '$lib/server/api/toast';
+import { redirect } from '@sveltejs/kit';
 
 async function getGithubUserEmail(accessToken: string): Promise<string | null> {
     const emailListRequest = new Request('https://api.github.com/user/emails');
@@ -93,5 +95,10 @@ export async function GET({ cookies, url }: { cookies: Cookies; url: URL }): Pro
     const sessionToken = generateSessionToken();
     const session = await createSession(sessionToken, sessionUserId);
     setSessionTokenCookie(cookies, sessionToken, session.expiresAt);
-    return new Response(null, { status: 302, headers: { Location: '/overview/dashboard' } });
+    setToastMessage(cookies, {
+        message: 'Login with github successfully.',
+        type: 'success',
+        path: '/app/overview/dashboard'
+    });
+    throw redirect(302, '/app/overview/dashboard');
 }

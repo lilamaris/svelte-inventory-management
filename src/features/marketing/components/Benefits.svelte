@@ -101,10 +101,7 @@
             <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
                 <Card>
                     <CardHeader>
-                        <CardTitle class="flex items-center gap-2">
-                            <img src="/notion-logo.svg" alt="Notion" class="h-6 w-6" />
-                            Notion
-                        </CardTitle>
+                        <CardTitle class="flex items-center gap-2">Notion</CardTitle>
                         <CardDescription>문서와 지식을 한 곳에서 관리</CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -118,10 +115,7 @@
 
                 <Card>
                     <CardHeader>
-                        <CardTitle class="flex items-center gap-2">
-                            <img src="/slack-logo.svg" alt="Slack" class="h-6 w-6" />
-                            Slack
-                        </CardTitle>
+                        <CardTitle class="flex items-center gap-2">Slack</CardTitle>
                         <CardDescription>실시간 알림과 커뮤니케이션</CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -135,10 +129,7 @@
 
                 <Card>
                     <CardHeader>
-                        <CardTitle class="flex items-center gap-2">
-                            <img src="/zapier-logo.svg" alt="Zapier" class="h-6 w-6" />
-                            Zapier
-                        </CardTitle>
+                        <CardTitle class="flex items-center gap-2">Zapier</CardTitle>
                         <CardDescription>5,000+ 앱과의 자동화 연결</CardDescription>
                     </CardHeader>
                     <CardContent>

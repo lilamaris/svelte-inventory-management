@@ -11,22 +11,20 @@ import {
 } from '$lib/server/api/session';
 import { verifyPassword } from '$lib/server/api/auth/password';
 import { getAccountPasswordHash } from '$lib/server/api/auth/account';
+import { getToastMessage, setToastMessage } from '$lib/server/api/toast';
 
 export function load({ locals, cookies }) {
     if (locals.session !== null && locals.user !== null) {
-        const flash = { message: 'You are already logged in', type: 'info' };
-        cookies.set('flash', JSON.stringify(flash), {
-            path: '/',
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
-            maxAge: 60 * 60 * 24 * 30
+        setToastMessage(cookies, {
+            message: 'You are already logged in!',
+            type: 'info',
+            path: '/app/overview/dashboard'
         });
-        return redirect(302, '/');
+        return redirect(302, '/app/overview/dashboard');
     }
 
-    const flash = cookies.get('flash');
-    return { flash: flash ? JSON.parse(flash) : null };
+    const toast = getToastMessage(cookies);
+    return { toast };
 }
 
 export const actions: Actions = {
@@ -67,6 +65,6 @@ export const actions: Actions = {
         const session = await createSession(sessionToken, user.id);
         setSessionTokenCookie(cookies, sessionToken, session.expiresAt);
 
-        return redirect(302, '/');
+        return redirect(302, '/app/overview/dashboard');
     }
 };

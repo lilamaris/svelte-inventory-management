@@ -2,6 +2,7 @@ import type { Cookies } from '@sveltejs/kit';
 
 import { generateState } from 'arctic';
 import { github } from '$lib/server/api/auth/oauth';
+import { redirect } from '@sveltejs/kit';
 
 export async function GET({ cookies }: { cookies: Cookies }): Promise<Response> {
     const state = generateState();
@@ -15,10 +16,5 @@ export async function GET({ cookies }: { cookies: Cookies }): Promise<Response> 
         sameSite: 'lax'
     });
 
-    return new Response(null, {
-        status: 302,
-        headers: {
-            Location: url.toString()
-        }
-    });
+    throw redirect(302, url.toString());
 }
