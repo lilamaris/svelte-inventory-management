@@ -64,6 +64,11 @@ export const actions: Actions = {
         const sessionToken = generateSessionToken();
         const session = await createSession(sessionToken, user.id);
         setSessionTokenCookie(cookies, sessionToken, session.expiresAt);
+        setToastMessage(cookies, {
+            message: 'You have been logged in!',
+            type: 'success',
+            path: '/app/overview/dashboard'
+        });
 
         return redirect(302, '/app/overview/dashboard');
     }

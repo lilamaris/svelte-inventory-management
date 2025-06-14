@@ -20,5 +20,5 @@ export const GET = async ({ cookies }) => {
         type: 'success',
         path: '/'
     });
-    throw redirect(302, '/');
+    return redirect(302, '/');
 };

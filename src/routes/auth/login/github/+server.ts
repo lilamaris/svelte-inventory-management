@@ -16,5 +16,5 @@ export async function GET({ cookies }: { cookies: Cookies }): Promise<Response> 
         sameSite: 'lax'
     });
 
-    throw redirect(302, url.toString());
+    return redirect(302, url.toString());
 }

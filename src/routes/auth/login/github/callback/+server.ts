@@ -100,5 +100,5 @@ export async function GET({ cookies, url }: { cookies: Cookies; url: URL }): Pro
         type: 'success',
         path: '/app/overview/dashboard'
     });
-    throw redirect(302, '/app/overview/dashboard');
+    return redirect(302, '/app/overview/dashboard');
 }
