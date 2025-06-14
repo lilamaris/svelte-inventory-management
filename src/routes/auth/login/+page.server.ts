@@ -9,7 +9,7 @@ import {
     generateSessionToken,
     setSessionTokenCookie
 } from '$lib/server/api/session';
-import { verifyPassword } from '$lib/server/api/password';
+import { verifyPassword } from '$lib/server/api/auth/password';
 
 export function load({ locals }) {
     if (locals.session !== null && locals.user !== null) {
@@ -40,6 +40,11 @@ export const actions: Actions = {
         }
 
         const passwordHash = await getUserPasswordHash(user.id);
+        if (!passwordHash) {
+            return fail(400, {
+                state: { message: 'User is not registered with email', payload: formData }
+            });
+        }
         const validPassword = await verifyPassword(passwordHash, password);
 
         if (!validPassword) {

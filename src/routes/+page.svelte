@@ -8,14 +8,10 @@
     <h1>Welcome, {data.user.username}!</h1>
     <p>Session: {data.session.id}</p>
     <pre>{JSON.stringify(data, null, 2)}</pre>
-    <Button
-        onclick={() => {
-            fetch('/auth/logout', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-        }}>Logout</Button
-    >
+    <a href="/auth/login">
+        <Button>Login</Button>
+    </a>
+    <a href="/auth/logout">
+        <Button>Logout</Button>
+    </a>
 </div>
