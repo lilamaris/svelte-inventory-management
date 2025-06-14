@@ -1,5 +1,4 @@
 import prisma from '$lib/prisma';
-import { hashPassword } from '$lib/server/api/password';
 
 export interface User {
     id: string;
@@ -8,13 +7,16 @@ export interface User {
     roles: string[];
 }
 
-export async function createUser(email: string, username: string, password: string): Promise<User> {
-    const passwordHash = await hashPassword(password);
+export async function createUser(
+    email: string,
+    username: string,
+    avatarUrl?: string
+): Promise<User> {
     const user = await prisma.user.create({
         data: {
             username,
             email,
-            passwordHash
+            avatarUrl
         }
     });
 
@@ -33,14 +35,6 @@ export async function createUser(email: string, username: string, password: stri
     };
 }
 
-export async function updateUserPassword(userId: string, password: string): Promise<void> {
-    const passwordHash = await hashPassword(password);
-    await prisma.user.update({
-        where: { id: userId },
-        data: { passwordHash }
-    });
-}
-
 export async function updateUserEmail(userId: string, email: string): Promise<void> {
     await prisma.user.update({
         where: { id: userId },
@@ -55,16 +49,11 @@ export async function updateUserUsername(userId: string, username: string): Prom
     });
 }
 
-export async function getUserPasswordHash(userId: string): Promise<string> {
-    const user = await prisma.user.findUnique({
-        where: { id: userId }
+export async function updateUserAvatarUrl(userId: string, avatarUrl: string): Promise<void> {
+    await prisma.user.update({
+        where: { id: userId },
+        data: { avatarUrl }
     });
-
-    if (!user) {
-        throw new Error('Invalid user Id');
-    }
-
-    return user.passwordHash;
 }
 
 export async function getUserFromEmail(email: string): Promise<User | null> {
