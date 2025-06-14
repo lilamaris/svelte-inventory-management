@@ -4,7 +4,7 @@ import type { Actions } from './$types';
 import { signupSchema } from '$features/auth/types/authSchema';
 import { createUser, getUserFromEmail } from '$lib/server/api/user';
 import type { ActionState } from '$lib/types';
-import { checkUserHasAccountType, createAccount } from '$lib/server/api/auth/account';
+import { checkUserHasAccountType, createAccount } from '$lib/server/api/account';
 import { AccountType } from '$generated/prisma';
 import { getToastMessage, setToastMessage } from '$lib/server/api/toast';
 import {

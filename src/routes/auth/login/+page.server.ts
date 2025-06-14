@@ -9,8 +9,8 @@ import {
     generateSessionToken,
     setSessionTokenCookie
 } from '$lib/server/api/session';
-import { verifyPassword } from '$lib/server/api/auth/password';
-import { getAccountPasswordHash } from '$lib/server/api/auth/account';
+import { verifyPassword } from '$lib/server/api/password';
+import { getAccountPasswordHash } from '$lib/server/api/account';
 import { getToastMessage, setToastMessage } from '$lib/server/api/toast';
 
 export function load({ locals, cookies }) {

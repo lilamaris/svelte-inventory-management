@@ -7,10 +7,10 @@ import {
     createSession,
     setSessionTokenCookie
 } from '$lib/server/api/session';
-import { github } from '$lib/server/api/auth/oauth';
+import { github } from '$lib/server/api/oauth';
 import { createUser, getUserFromEmail } from '$lib/server/api/user';
 import { AccountType } from '$generated/prisma';
-import { createAccount, getAccountWithProviderId } from '$lib/server/api/auth/account';
+import { createAccount, getAccountWithProviderId } from '$lib/server/api/account';
 import { setToastMessage } from '$lib/server/api/toast';
 import { redirect } from '@sveltejs/kit';
 

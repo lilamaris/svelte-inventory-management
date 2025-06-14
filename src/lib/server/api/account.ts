@@ -1,7 +1,7 @@
 import { AccountType } from '$generated/prisma/enums';
 
 import prisma from '$lib/prisma';
-import { hashPassword } from '$lib/server/api/auth/password';
+import { hashPassword } from '$lib/server/api/password';
 
 export interface Account {
     type: AccountType;

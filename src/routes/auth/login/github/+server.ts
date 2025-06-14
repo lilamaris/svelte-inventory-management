@@ -1,7 +1,7 @@
 import type { Cookies } from '@sveltejs/kit';
 
 import { generateState } from 'arctic';
-import { github } from '$lib/server/api/auth/oauth';
+import { github } from '$lib/server/api/oauth';
 import { redirect } from '@sveltejs/kit';
 
 export async function GET({ cookies }: { cookies: Cookies }): Promise<Response> {
