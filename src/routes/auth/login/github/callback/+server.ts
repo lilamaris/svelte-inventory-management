@@ -63,13 +63,12 @@ export async function GET({ cookies, url }: { cookies: Cookies; url: URL }): Pro
 
     const existsAuthProvider = await getAccountWithProviderId(githubUserId, AccountType.Github);
 
-    // if auth provider is not found in db
-    // user visit here first time with github account.
-    // we need to create a new user and link it with github account
-    if (!existsAuthProvider) {
-        const email = await getGithubUserEmail(tokens.accessToken());
+    let sessionUserId: string;
 
-        if (email === null) {
+    if (!existsAuthProvider) {
+        const githubUserEmail = await getGithubUserEmail(tokens.accessToken());
+
+        if (githubUserEmail === null) {
             console.error('[PROVIDER: Github] Failed to get user email');
             return new Response('Failed to get user email. Verify your github account.', {
                 status: 400
@@ -77,7 +76,8 @@ export async function GET({ cookies, url }: { cookies: Cookies; url: URL }): Pro
         }
 
         const user =
-            (await getUserFromEmail(email)) || (await createUser(email, username, avatarUrl));
+            (await getUserFromEmail(githubUserEmail)) ||
+            (await createUser(githubUserEmail, username, avatarUrl));
 
         await createAccount({
             userId: user.id,
@@ -85,41 +85,13 @@ export async function GET({ cookies, url }: { cookies: Cookies; url: URL }): Pro
             providerId: githubUserId
         });
 
-        const sessionToken = generateSessionToken();
-        const session = await createSession(sessionToken, user.id);
-        setSessionTokenCookie(cookies, sessionToken, session.expiresAt);
-        return new Response(null, { status: 302, headers: { Location: '/' } });
+        sessionUserId = user.id;
+    } else {
+        sessionUserId = existsAuthProvider.userId;
     }
 
-    // if auth provider is exists but not linked to a user
-    // we need to get github user email for create a new user and link it with current auth provider
-    if (!existsAuthProvider.userId) {
-        const email = await getGithubUserEmail(tokens.accessToken());
-
-        if (email === null) {
-            console.error('[PROVIDER: Github] Failed to get user email');
-            return new Response('Failed to get user email. Verify your github account.', {
-                status: 400
-            });
-        }
-
-        const user = await createUser(email, username, avatarUrl);
-        await createAccount({
-            userId: user.id,
-            type: AccountType.Github,
-            providerId: githubUserId
-        });
-
-        const sessionToken = generateSessionToken();
-        const session = await createSession(sessionToken, user.id);
-        setSessionTokenCookie(cookies, sessionToken, session.expiresAt);
-        return new Response(null, { status: 302, headers: { Location: '/' } });
-    }
-
-    // if auth provider is exists and linked to a user
-    // we need to create a session for the user
     const sessionToken = generateSessionToken();
-    const session = await createSession(sessionToken, existsAuthProvider.userId);
+    const session = await createSession(sessionToken, sessionUserId);
     setSessionTokenCookie(cookies, sessionToken, session.expiresAt);
-    return new Response(null, { status: 302, headers: { Location: '/' } });
+    return new Response(null, { status: 302, headers: { Location: '/overview/dashboard' } });
 }

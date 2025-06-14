@@ -5,7 +5,7 @@ import { hashPassword } from '$lib/server/api/auth/password';
 
 export interface Account {
     type: AccountType;
-    userId: string | null;
+    userId: string;
     providerId: string | null;
 }
 
