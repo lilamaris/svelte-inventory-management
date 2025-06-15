@@ -16,6 +16,8 @@
             <Separator orientation="vertical" class="data-[orientation=vertical]:h-4" />
             <AppBreadcrumbs class="px-2" />
         </header>
-        {@render children()}
+        <div class="@container/main flex flex-1 flex-col items-stretch gap-6 p-4 [&>section]:flex-1">
+            {@render children()}
+        </div>
     </Sidebar.Inset>
 </Sidebar.Provider>

@@ -64,11 +64,10 @@
         {:else}
             <Breadcrumb.Link href={crumb.href}>{crumb.label}</Breadcrumb.Link>
         {/if}
-
-        {#if !isLast}
-            <Breadcrumb.Separator class="hidden md:block" />
-        {/if}
     </Breadcrumb.Item>
+    {#if !isLast}
+        <Breadcrumb.Separator class="hidden md:block" />
+    {/if}
 {/snippet}
 
 <Breadcrumb.Root {...restProps}>
