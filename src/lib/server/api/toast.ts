@@ -1,4 +1,4 @@
-import type { Cookies } from "@sveltejs/kit";
+import type { Cookies } from '@sveltejs/kit';
 
 export interface ToastMessage {
     message: string;
@@ -6,7 +6,7 @@ export interface ToastMessage {
     path: string;
 }
 
-const FLASH_TOAST_COOKIE_NAME = "flash-toast"
+const FLASH_TOAST_COOKIE_NAME = 'flash-toast';
 
 export function setToastMessage(cookies: Cookies, message: ToastMessage) {
     const flash = message;
