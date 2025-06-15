@@ -15,14 +15,19 @@
         "test:unit": "vitest",
         "test": "npm run test:unit -- --run"
     },
+    "prisma": {
+        "seed": "pnpm dlx tsx prisma/seed.ts"
+    },
     "devDependencies": {
         "@eslint/compat": "^1.2.5",
         "@eslint/js": "^9.18.0",
+        "@faker-js/faker": "^9.8.0",
         "@internationalized/date": "^3.8.2",
         "@sveltejs/adapter-auto": "^6.0.0",
         "@sveltejs/kit": "^2.16.0",
         "@sveltejs/vite-plugin-svelte": "^5.0.0",
         "@tailwindcss/vite": "^4.0.0",
+        "@tanstack/table-core": "^8.21.3",
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/svelte": "^5.2.4",
         "bits-ui": "^2.7.0",
